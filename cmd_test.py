@@ -574,11 +574,11 @@ def build_search_command_and_exec(search_string: str, file_path: str, reverse: b
         safe_end = shlex.quote(end_time)
 
         # form awk command to get the logs with filters
-        cmd_list = ["/usr/bin/awk", "-v", f"search={safe_search}", "-v", f"start={safe_start}", "-v", f"end={safe_end}",
+        cmd_list = ["/usr/bin/awk", "-v", f"search={search_string}", "-v", f"start={start_time}", "-v", f"end={end_time}",
                     f"$0 ~ search && ($1 \" \" $2) >= start && ($1 \" \" $2) <= end", f"{safe_path}"]
     else:
         # form the awk command to get the logs by search
-        cmd_list = ["/usr/bin/awk", "-v", f"search={safe_search}", "$0 ~ search", f"{safe_path}"]
+        cmd_list = ["/usr/bin/awk", "-v", f"search={search_string}", "$0 ~ search", f"{safe_path}"]
 
     # Execute command
     cmd_res = subprocess.run(cmd_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
